@@ -1,0 +1,21 @@
+# секреты
+.env
+.env.*
+!.env.example
+
+# окружение и кэш
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.DS_Store
+
+# данные и артефакты прогонов
+artifacts/*
+!artifacts/.gitkeep
+data/*
+!data/.gitkeep
+
+# служебное
+.vercel/

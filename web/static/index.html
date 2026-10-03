@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinScope — анализ финансовых документов</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="FinScope"><span class="brand-mark">F</span><span>FinScope</span></a>
+      <div class="topbar-actions">
+        <span class="privacy"><span class="privacy-dot"></span>Документы остаются в вашем RAGFlow</span>
+        <a class="ghost-link" href="/api/docs" target="_blank" rel="noreferrer">API</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Financial Document Intelligence</div>
+        <h1>Спросите документ.<br><span>Получите ответ с источником.</span></h1>
+        <p class="hero-copy">Загрузите финансовый отчёт, договор или таблицу. RAGFlow найдёт нужные фрагменты, Reranker уточнит выбор, а Qwen сформирует проверяемый ответ.</p>
+        <div class="pipeline" aria-label="Этапы обработки"><span>RAGFlow</span><i></i><span>Reranker</span><i></i><span>Qwen</span></div>
+      </section>
+
+      <section class="workspace">
+        <aside class="control-panel">
+          <div class="section-heading"><span class="step">01</span><div><h2>База знаний</h2><p>Выберите или создайте Dataset</p></div></div>
+          <label class="field-label" for="dataset-select">Dataset RAGFlow</label>
+          <div class="select-row">
+            <select id="dataset-select"><option value="">Загрузка…</option></select>
+            <button id="refresh-datasets" class="icon-button" title="Обновить" aria-label="Обновить datasets">↻</button>
+          </div>
+          <div class="create-row">
+            <input id="dataset-name" maxlength="80" placeholder="financial-documents">
+            <button id="create-dataset" class="secondary-button">Создать</button>
+          </div>
+          <div class="divider"></div>
+          <div class="section-heading"><span class="step">02</span><div><h2>Документ</h2><p id="upload-limit-note">Один файл за раз</p></div></div>
+          <label id="drop-zone" class="drop-zone" for="file-input">
+            <input id="file-input" type="file" accept=".pdf,.doc,.docx,.txt,.md,.csv,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg">
+            <span class="upload-icon">⇧</span><strong>Перетащите файл сюда</strong><small>или нажмите для выбора</small>
+            <span class="formats">PDF · DOCX · XLSX · CSV · изображения</span>
+          </label>
+          <button id="upload-button" class="primary-button" disabled>Загрузить и обработать</button>
+          <div id="document-card" class="document-card hidden">
+            <div class="file-badge">DOC</div><div class="document-meta"><strong id="document-name">—</strong><span id="document-status">Ожидает загрузки</span></div><div id="document-progress" class="progress-ring">0%</div>
+          </div>
+        </aside>
+
+        <section class="analysis-panel">
+          <div class="status-strip">
+            <div><span class="status-label">Сервисы</span><strong id="service-summary">Проверяем подключение…</strong></div>
+            <div id="service-badges" class="service-badges"></div>
+          </div>
+          <div id="empty-state" class="empty-state">
+            <div class="empty-graphic"><span></span><span></span><span></span></div>
+            <h2>Здесь появится анализ</h2><p>Выберите Dataset и загрузите документ. После индексации можно задавать вопросы только по его содержимому.</p>
+          </div>
+          <div id="chat-state" class="chat-state hidden">
+            <div class="question-area">
+              <span class="question-kicker">Быстрые вопросы</span>
+              <div class="quick-questions">
+                <button data-question="Как изменилась выручка по периодам?">Динамика выручки</button>
+                <button data-question="Какие финансовые риски прямо указаны в документе?">Риски</button>
+                <button data-question="Что произошло с долгом и денежным потоком?">Долг и денежный поток</button>
+              </div>
+              <form id="question-form" class="question-form">
+                <textarea id="question-input" rows="3" maxlength="1000" placeholder="Например: Как изменилась маржинальность и на каких страницах это указано?"></textarea>
+                <button id="ask-button" class="ask-button" type="submit">Спросить <span>→</span></button>
+              </form>
+            </div>
+            <article id="answer-card" class="answer-card hidden">
+              <div class="answer-header"><span>Ответ по документу</span><span id="answer-grounding" class="grounding-badge">Проверка</span></div>
+              <h3 id="answer-question"></h3><p id="answer-text" class="answer-text"></p>
+              <div class="answer-columns"><div><h4>Наблюдаемые факты</h4><ul id="facts-list"></ul></div><div><h4>Интерпретация</h4><ul id="interpretation-list"></ul></div></div>
+              <div class="sources-block"><h4>Источники</h4><div id="sources-list"></div></div>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
